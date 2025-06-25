@@ -1,0 +1,23 @@
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card shadow-lg" style="width: 100%; max-width: 400px; border-radius: 20px;">
+    <div class="card-body">
+      <div class="text-center mb-3">
+        <img src="assets/logo.jpg" alt="Logo" style="width: 60px;">
+      </div>
+      <h2 class="mb-4 text-center">Iniciar Sesión</h2>
+      <form #f="ngForm" (ngSubmit)="onLogin()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo electrónico</label>
+          <input type="email" id="email" class="form-control" [(ngModel)]="email" name="email" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña</label>
+          <input type="password" id="password" class="form-control" [(ngModel)]="password" name="password" required>
+        </div>
+        <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+        <button type="submit" class="btn btn-primary w-100 mb-2">Entrar</button>
+        <button type="button" class="btn btn-outline-primary w-100" (click)="onRegister()">Registrarse</button>
+      </form>
+    </div>
+  </div>
+</div>

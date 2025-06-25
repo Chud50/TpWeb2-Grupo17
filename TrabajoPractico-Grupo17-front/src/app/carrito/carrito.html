@@ -1,0 +1,14 @@
+<div class="container mt-4">
+  <h2>Mi Pedido</h2>
+  <div *ngIf="carrito.length === 0">
+    <p>No hay productos en el carrito.</p>
+  </div>
+  <div *ngIf="carrito.length > 0">
+    <ul class="list-group mb-3">
+      <li class="list-group-item" *ngFor="let producto of carrito">
+        <strong>{{ producto.nombre }}</strong> - ${{ producto.precio }}
+      </li>
+    </ul>
+    <p class="fw-bold">Total: ${{ total }}</p>
+  </div>
+</div>
