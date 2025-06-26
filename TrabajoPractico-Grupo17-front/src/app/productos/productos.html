@@ -24,7 +24,21 @@
 </nav>
 
 <div class="container">
-  <div class="row">
+  <!-- Mostrar estado de carga -->
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2">Cargando productos...</p>
+  </div>
+
+  <!-- Mostrar error si existe -->
+  <div *ngIf="error" class="alert alert-warning">
+    {{ error }}
+  </div>
+
+  <!-- Mostrar productos -->
+  <div class="row" *ngIf="!loading">
     <div class="col-md-4 mb-4" *ngFor="let producto of productos">
       <div class="card h-100 shadow-sm">
         <img [src]="producto.imagen" class="card-img-top" [alt]="producto.nombre" style="height: 400px; object-fit: cover;">

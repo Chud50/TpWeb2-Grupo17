@@ -24,7 +24,11 @@ export class Server {
         this.app.use(express.json())
         this.app.use(express.urlencoded({extended : true}))
 
-        this.app.use(cors())
+        // Configurar CORS para permitir peticiones desde Angular
+        this.app.use(cors({
+            origin: ['http://localhost:4200', 'http://localhost:51372'],
+            credentials: true
+        }))
 
         this.app.use(this.routes);
 

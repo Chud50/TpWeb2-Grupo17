@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "node dist/app.js",
+    "dev": "ts-node src/app.ts",
+    "build": "tsc",
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

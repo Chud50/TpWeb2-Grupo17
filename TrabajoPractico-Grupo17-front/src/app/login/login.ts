@@ -18,18 +18,23 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  onLogin() {
+  async onLogin() {
     this.error = '';
     if (!this.email || !this.password) {
-    this.error = 'Por favor, completa todos los campos.';
-    return;
+      this.error = 'Por favor, completa todos los campos.';
+      return;
     }
     
-    if (this.authService.login(this.email, this.password)) {
-      // Redirige a la página principal o productos
-      this.router.navigate(['/productos']);
-    } else {
-      this.error = 'Correo o contraseña incorrectos';
+    try {
+      const loginResult = await this.authService.login(this.email, this.password);
+      if (loginResult) {
+        this.router.navigate(['/productos']);
+      } else {
+        this.error = 'Correo o contraseña incorrectos';
+      }
+    } catch (error) {
+      console.error('Error en login:', error);
+      this.error = 'Error al conectar con el servidor';
     }
   }
 

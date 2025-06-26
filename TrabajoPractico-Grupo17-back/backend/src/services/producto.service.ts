@@ -13,29 +13,29 @@ export class ProductoService {
         return await this.productoRepository.getProductoById(id);
     }
 
-    async crearProducto(data: { nombre: string; descripcion: string; clasificacion: string; precio: number }) {
-        const { nombre, descripcion, clasificacion, precio } = data;
+    async crearProducto(data: { nombre: string; imagen: string; categoria: string; precio: number }) {
+        const { nombre, imagen, categoria, precio } = data;
 
         if (!nombre || typeof nombre !== 'string') {
             throw new Error('El nombre es obligatorio y debe ser un string');
         }
 
-        if (descripcion !== undefined && typeof descripcion !== 'string') {
-            throw new Error('La descripción debe ser un string');
+        if (imagen !== undefined && typeof imagen !== 'string') {
+            throw new Error('La imagen debe ser un string');
         }
 
-        if (clasificacion !== undefined && typeof clasificacion !== 'string') {
-            throw new Error('La clasificación debe ser un string');
+        if (categoria !== undefined && typeof categoria !== 'string') {
+            throw new Error('La categoría debe ser un string');
         }
 
         if (precio !== undefined && typeof precio !== 'number') {
             throw new Error('El precio debe ser un número');
         }
 
-        return await this.productoRepository.create({ nombre, descripcion, clasificacion, precio });
+        return await this.productoRepository.create({ nombre, imagen, categoria, precio });
     }
 
-    async actualizarProducto(id: number, data: { nombre?: string; descripcion?: string; clasificacion?: string; precio?: number }) {
+    async actualizarProducto(id: number, data: { nombre?: string; imagen?: string; categoria?: string; precio?: number }) {
         return this.productoRepository.update(id, data);
     }
 

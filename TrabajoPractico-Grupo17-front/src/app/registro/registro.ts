@@ -22,7 +22,7 @@ export class RegistroComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  onRegister() {
+  async onRegister() {
     this.error = '';
     if (!this.nombre || !this.apellido || !this.direccion || !this.email || !this.password) {
       this.error = 'Por favor, completa todos los campos.';
@@ -32,12 +32,19 @@ export class RegistroComponent {
       this.error = 'Las contraseñas no coinciden';
       return;
     }
-     if (!this.authService.register(this.email, this.password, this.nombre, this.apellido, this.direccion)) {
-      this.error = 'El usuario ya existe';
-      return;
+    
+    try {
+      const registroResult = await this.authService.register(this.email, this.password, this.nombre, this.apellido, this.direccion);
+      if (registroResult) {
+        alert('¡Usuario registrado con éxito!');
+        this.router.navigate(['/login']);
+      } else {
+        this.error = 'El usuario ya existe';
+      }
+    } catch (error) {
+      console.error('Error en registro:', error);
+      this.error = 'Error al conectar con el servidor';
     }
-    alert('¡Usuario registrado con éxito!');
-    this.router.navigate(['/login']);
   }
 
   volverAlLogin(event: Event) {
