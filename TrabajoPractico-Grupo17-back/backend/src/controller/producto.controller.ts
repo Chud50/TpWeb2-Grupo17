@@ -42,24 +42,41 @@ export class ProductoController {
     }
     public createProducto = async (req: Request, res: Response) => {
         try {
+            console.log('📝 DEBUG: Datos recibidos en backend (producto):', req.body);
             const producto = await productoService.crearProducto(req.body);
-            res.status(200).json(producto);
-        } catch (error) {
-            console.log(error);
-            res.status(400).json({ message: 'Error al crear el producto', error });
+            console.log('✅ DEBUG: Producto creado:', producto);
+            return res.status(201).json(producto);  // Agregamos return explícito y status 201
+        } catch (error: any) {
+            console.log('❌ ERROR en createProducto:', error);
+            
+            // Verificar que no hayamos enviado ya una respuesta
+            if (res.headersSent) {
+                console.log('⚠️ Headers ya enviados, no se puede responder');
+                return;
+            }
+            
+            // Manejo específico para errores de Prisma
+            if (error.code === 'P2002') {
+                return res.status(409).json({ 
+                    message: 'Ya existe un producto con estos datos',
+                    code: 'DUPLICATE_PRODUCT'
+                });
+            }
+            
+            return res.status(400).json({ message: 'Error al crear el producto', error });
         }
     }
 
     public updateProducto = async (req: Request, res: Response) => {
         const id = Number(req.params.id);
-        const { nombre, precio, imagen, categoria } = req.body;
+        const { nombre, descripcion, clasificacion, precio, imagen } = req.body;
 
         if (isNaN(id)) {
             return res.status(400).json({ message: 'ID inválido' });
         }
 
         try {
-            const actualizado = await productoService.actualizarProducto(id, { nombre, imagen, categoria, precio });
+            const actualizado = await productoService.actualizarProducto(id, { nombre, descripcion, clasificacion, precio, imagen });
             res.status(200).json(actualizado);
         } catch (error) {
             console.log(error);

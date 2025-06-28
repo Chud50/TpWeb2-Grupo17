@@ -13,29 +13,33 @@ export class ProductoService {
         return await this.productoRepository.getProductoById(id);
     }
 
-    async crearProducto(data: { nombre: string; imagen: string; categoria: string; precio: number }) {
-        const { nombre, imagen, categoria, precio } = data;
+    async crearProducto(data: { nombre: string; descripcion: string; clasificacion: string; precio: number; imagen: string }) {
+        const { nombre, descripcion, clasificacion, precio, imagen } = data;
 
         if (!nombre || typeof nombre !== 'string') {
             throw new Error('El nombre es obligatorio y debe ser un string');
+        }
+
+        if (!descripcion || typeof descripcion !== 'string') {
+            throw new Error('La descripción es obligatoria y debe ser un string');
+        }
+
+        if (!clasificacion || typeof clasificacion !== 'string') {
+            throw new Error('La clasificación es obligatoria y debe ser un string');
         }
 
         if (imagen !== undefined && typeof imagen !== 'string') {
             throw new Error('La imagen debe ser un string');
         }
 
-        if (categoria !== undefined && typeof categoria !== 'string') {
-            throw new Error('La categoría debe ser un string');
-        }
-
         if (precio !== undefined && typeof precio !== 'number') {
             throw new Error('El precio debe ser un número');
         }
 
-        return await this.productoRepository.create({ nombre, imagen, categoria, precio });
+        return await this.productoRepository.create({ nombre, descripcion, clasificacion, precio, imagen });
     }
 
-    async actualizarProducto(id: number, data: { nombre?: string; imagen?: string; categoria?: string; precio?: number }) {
+    async actualizarProducto(id: number, data: { nombre?: string; descripcion?: string; clasificacion?: string; precio?: number; imagen?: string }) {
         return this.productoRepository.update(id, data);
     }
 

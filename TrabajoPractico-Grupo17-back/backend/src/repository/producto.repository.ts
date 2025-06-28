@@ -12,13 +12,13 @@ export class ProductoRepository {
         });
     }
 
-    async create(data: { nombre: string; imagen: string; categoria: string; precio: number }) {
+    async create(data: { nombre: string; descripcion: string; clasificacion: string; precio: number; imagen: string }) {
         return await prisma.producto.create({
             data
         });
     }
 
-    async update(id: number, data: { nombre?: string; imagen?: string; categoria?: string; precio?: number }) {
+    async update(id: number, data: { nombre?: string; descripcion?: string; clasificacion?: string; precio?: number; imagen?: string }) {
         return await prisma.producto.update({
             where: { id },
             data

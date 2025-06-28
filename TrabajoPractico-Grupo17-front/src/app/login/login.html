@@ -1,22 +1,54 @@
-<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-  <div class="card shadow-lg" style="width: 100%; max-width: 400px; border-radius: 20px;">
-    <div class="card-body">
-      <div class="text-center mb-3">
-        <img src="assets/logo.jpg" alt="Logo" style="width: 60px;">
-      </div>
-      <h2 class="mb-4 text-center">Iniciar Sesión</h2>
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <img src="assets/logo.jpg" alt="APPI-ROPA Logo" class="login-logo">
+      <h1 class="login-title">Bienvenido</h1>
+      <p class="login-subtitle">Inicia sesión en tu cuenta</p>
+    </div>
+    
+    <div class="login-body">
       <form #f="ngForm" (ngSubmit)="onLogin()">
-        <div class="mb-3">
+        
+        <div class="form-group">
           <label for="email" class="form-label">Correo electrónico</label>
-          <input type="email" id="email" class="form-control" [(ngModel)]="email" name="email" required>
+          <input 
+            type="email" 
+            id="email" 
+            class="form-control" 
+            [(ngModel)]="email" 
+            name="email" 
+            required
+            placeholder="tu@email.com">
         </div>
-        <div class="mb-3">
+        
+        <div class="form-group">
           <label for="password" class="form-label">Contraseña</label>
-          <input type="password" id="password" class="form-control" [(ngModel)]="password" name="password" required>
+          <input 
+            type="password" 
+            id="password" 
+            class="form-control" 
+            [(ngModel)]="password" 
+            name="password" 
+            required
+            placeholder="Tu contraseña">
         </div>
-        <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-        <button type="submit" class="btn btn-primary w-100 mb-2">Entrar</button>
-        <button type="button" class="btn btn-outline-primary w-100" (click)="onRegister()">Registrarse</button>
+        
+        <div *ngIf="error" class="alert alert-danger">
+          <i class="fas fa-exclamation-triangle me-2"></i>{{ error }}
+        </div>
+        
+        <button type="submit" class="btn btn-primary login-btn" [disabled]="!f.valid">
+          <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+        </button>
+        
+        <div class="divider">
+          <span>o</span>
+        </div>
+        
+        <button type="button" class="btn btn-outline-primary register-btn" (click)="onRegister()">
+          <i class="fas fa-user-plus me-2"></i>Crear cuenta nueva
+        </button>
+        
       </form>
     </div>
   </div>

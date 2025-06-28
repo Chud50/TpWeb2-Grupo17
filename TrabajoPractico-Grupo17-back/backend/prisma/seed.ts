@@ -4,26 +4,29 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Creando productos iniciales...');
+  console.log('Creando productos iniciales con nuevo schema...');
   
   const productos = [
     {
       nombre: 'Remera básica',
-      imagen: 'assets/remera.jpg',
-      categoria: 'Remeras',
-      precio: 3500
+      descripcion: 'Remera de algodón 100%, cómoda y versátil para uso diario',
+      clasificacion: 'Remeras',
+      precio: 3500,
+      imagen: 'assets/remera.jpg'
     },
     {
       nombre: 'Jean clásico',
-      imagen: 'assets/jean.jpg',
-      categoria: 'Pantalones',
-      precio: 8500
+      descripcion: 'Jean de corte clásico, tela de alta calidad y resistente',
+      clasificacion: 'Pantalones',
+      precio: 8500,
+      imagen: 'assets/jean.jpg'
     },
     {
       nombre: 'Buzo argentina',
-      imagen: 'assets/buzo.jpg',
-      categoria: 'Buzos',
-      precio: 6500
+      descripcion: 'Buzo con capucha diseño Argentina, ideal para días fríos',
+      clasificacion: 'Buzos',
+      precio: 6500,
+      imagen: 'assets/buzo.jpg'
     }
   ];
 

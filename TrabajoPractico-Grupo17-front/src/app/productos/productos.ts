@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CarritoService } from '../services/carrito.service';
-import { RouterModule } from '@angular/router';
-
-export interface Producto {
-  id?: number;
-  nombre: string;
-  imagen: string;
-  categoria: string;
-  precio: number;
-}
+import { RouterModule, Router } from '@angular/router';
+import { ProductoService } from '../api/services/producto/producto.service';
+import { CarritoService } from '../api/services/carrito/carrito.service';
+import { AuthService } from '../api/services/auth/auth.service';
+import { Producto } from '../modules/productos/interfaces/producto.interface';
 
 @Component({
   selector: 'app-productos',
@@ -22,13 +17,28 @@ export class ProductosComponent implements OnInit {
   productos: Producto[] = [];
   loading = true;
   error = '';
+  cantidadEnCarrito = 0;
 
   constructor(
-    private carritoService: CarritoService
+    private productoService: ProductoService,
+    private carritoService: CarritoService,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.cargarProductos();
+    this.actualizarCantidadCarrito();
+  }
+
+  actualizarCantidadCarrito() {
+    this.carritoService.carrito$.subscribe(carrito => {
+      this.cantidadEnCarrito = carrito?.cantidadTotal || 0;
+    });
+  }
+
+  trackByProducto(index: number, producto: Producto): number {
+    return producto.id || index;
   }
 
   async cargarProductos() {
@@ -36,49 +46,37 @@ export class ProductosComponent implements OnInit {
     this.error = '';
 
     try {
-      // Intentar cargar desde el backend usando fetch nativo
-      const response = await fetch('http://localhost:3000/api/producto');
+      console.log('🛍️ Cargando productos con el nuevo servicio...');
       
-      if (response.ok) {
-        const productos = await response.json();
-        console.log('Productos cargados desde backend:', productos);
-        console.log('Cantidad de productos:', productos.length);
-        this.productos = productos;
-      } else {
-        throw new Error('Backend no disponible');
-      }
-    } catch (error) {
-      console.error('Error al cargar productos desde backend:', error);
-      this.error = 'Conectando con backend... Mostrando productos de ejemplo';
-      
-      // Fallback a datos mock
-      this.productos = [
-        {
-          nombre: 'Remera básica',
-          imagen: 'assets/remera.jpg',
-          categoria: 'Remeras',
-          precio: 3500
+      // Usar el nuevo servicio con mapping
+      this.productoService.listProductos().subscribe({
+        next: (productos) => {
+          console.log('✅ Productos cargados:', productos);
+          this.productos = productos;
+          this.loading = false;
         },
-        {
-          nombre: 'Jean clásico',
-          imagen: 'assets/jean.jpg',
-          categoria: 'Pantalones',
-          precio: 8500
-        },
-        {
-          nombre: 'Buzo argentina',
-          imagen: 'assets/buzo.jpg',
-          categoria: 'Buzos',
-          precio: 6500
+        error: (error) => {
+          console.error('❌ Error al cargar productos:', error);
+          this.error = 'Error al cargar productos del servidor';
+          this.loading = false;
+          
+          // Los datos mock ya están manejados en el servicio
         }
-      ];
-    } finally {
+      });
+    } catch (error) {
+      console.error('❌ Error inesperado:', error);
+      this.error = 'Error inesperado al cargar productos';
       this.loading = false;
     }
   }
 
   agregarAlCarrito(producto: Producto) {
-    this.carritoService.agregarProducto(producto);
+    this.carritoService.agregarProducto(producto, 1);
     alert(`${producto.nombre} agregado al carrito`);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
