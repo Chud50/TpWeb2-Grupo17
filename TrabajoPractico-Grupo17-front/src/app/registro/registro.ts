@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth';
+import { AuthService } from '../api/services/auth/auth.service';
 
 @Component({
   selector: 'app-registro',
@@ -34,12 +34,21 @@ export class RegistroComponent {
     }
     
     try {
-      const registroResult = await this.authService.register(this.email, this.password, this.nombre, this.apellido, this.direccion);
-      if (registroResult) {
-        alert('¡Usuario registrado con éxito!');
+      console.log('🐛 DEBUG: Iniciando registro...');
+      const result = await this.authService.register({
+        email: this.email,
+        password: this.password,
+        nombre: this.nombre,
+        apellido: this.apellido,
+        direccion: this.direccion
+      }).toPromise();
+      console.log('🐛 DEBUG: Resultado del registro:', result);
+      
+      if (result && result.success) {
+        alert(result.message || '¡Usuario registrado con éxito!');
         this.router.navigate(['/login']);
       } else {
-        this.error = 'El usuario ya existe';
+        this.error = result?.message || 'Error al registrar usuario';
       }
     } catch (error) {
       console.error('Error en registro:', error);

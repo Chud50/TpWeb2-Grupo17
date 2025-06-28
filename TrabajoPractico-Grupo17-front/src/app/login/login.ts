@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../services/auth';
+import { AuthService } from '../api/services/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -26,7 +26,7 @@ export class LoginComponent {
     }
     
     try {
-      const loginResult = await this.authService.login(this.email, this.password);
+      const loginResult = await this.authService.loginAsync(this.email, this.password);
       if (loginResult) {
         this.router.navigate(['/productos']);
       } else {

@@ -44,11 +44,28 @@ export class UsuarioController {
 
     public createUsuario = async (req: Request, res: Response) => {
         try {
+            console.log('📝 DEBUG: Datos recibidos en backend:', req.body);
             const usuario = await usuarioService.crearUsuario(req.body)
-            res.json(200).json(usuario)
-        } catch (error) {
-            console.log(error);
-            res.status(400).json({ message: 'Error al crear el usuario', error })
+            console.log('✅ DEBUG: Usuario creado:', usuario);
+            return res.status(201).json(usuario);  // Agregamos return explícito
+        } catch (error: any) {
+            console.log('❌ ERROR en createUsuario:', error);
+            
+            // Verificar que no hayamos enviado ya una respuesta
+            if (res.headersSent) {
+                console.log('⚠️ Headers ya enviados, no se puede responder');
+                return;
+            }
+            
+            // Manejo específico para errores de Prisma
+            if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
+                return res.status(409).json({ 
+                    message: 'El email ya está registrado',
+                    code: 'EMAIL_ALREADY_EXISTS'
+                });
+            }
+            
+            return res.status(400).json({ message: 'Error al crear el usuario', error });
         }
     }
 
@@ -63,7 +80,7 @@ export class UsuarioController {
 
         try {
             const actualizado = await usuarioService.actualizarUsuario(id, { nombre, apellido, direccion, password, email })
-            res.json(200).json(actualizado)
+            res.status(200).json(actualizado)
         } catch (error) {
             console.log(error);
             res.status(400).json({ message: 'Error al actualizar el usuario', error })
