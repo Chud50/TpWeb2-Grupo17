@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ProductoService } from '../api/services/producto/producto.service';
 import { CarritoService } from '../api/services/carrito/carrito.service';
+import { AuthService } from '../api/services/auth/auth.service';
 import { Producto } from '../modules/productos/interfaces/producto.interface';
 
 @Component({
@@ -20,7 +21,9 @@ export class ProductosComponent implements OnInit {
 
   constructor(
     private productoService: ProductoService,
-    private carritoService: CarritoService
+    private carritoService: CarritoService,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -70,5 +73,10 @@ export class ProductosComponent implements OnInit {
   agregarAlCarrito(producto: Producto) {
     this.carritoService.agregarProducto(producto, 1);
     alert(`${producto.nombre} agregado al carrito`);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

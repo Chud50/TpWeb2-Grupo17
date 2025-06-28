@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CarritoService } from '../api/services/carrito/carrito.service';
+import { AuthService } from '../api/services/auth/auth.service';
 import { Carrito, CarritoItem } from '../modules/carrito/interfaces/carrito.interface';
 
 @Component({
@@ -16,7 +17,11 @@ export class CarritoComponent implements OnInit, OnDestroy {
   carrito: Carrito | null = null;
   private subscription: Subscription = new Subscription();
 
-  constructor(private carritoService: CarritoService) {}
+  constructor(
+    private carritoService: CarritoService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     // Suscribirse al estado reactivo del carrito
@@ -76,5 +81,10 @@ export class CarritoComponent implements OnInit, OnDestroy {
    */
   trackByItem(index: number, item: CarritoItem): number {
     return item.producto.id || index;
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
