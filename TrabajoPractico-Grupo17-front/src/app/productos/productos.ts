@@ -16,6 +16,7 @@ export class ProductosComponent implements OnInit {
   productos: Producto[] = [];
   loading = true;
   error = '';
+  cantidadEnCarrito = 0;
 
   constructor(
     private productoService: ProductoService,
@@ -24,6 +25,17 @@ export class ProductosComponent implements OnInit {
 
   ngOnInit() {
     this.cargarProductos();
+    this.actualizarCantidadCarrito();
+  }
+
+  actualizarCantidadCarrito() {
+    this.carritoService.carrito$.subscribe(carrito => {
+      this.cantidadEnCarrito = carrito?.cantidadTotal || 0;
+    });
+  }
+
+  trackByProducto(index: number, producto: Producto): number {
+    return producto.id || index;
   }
 
   async cargarProductos() {

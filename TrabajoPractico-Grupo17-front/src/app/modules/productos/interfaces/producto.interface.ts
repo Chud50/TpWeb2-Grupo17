@@ -5,9 +5,10 @@
 export interface Producto {
   id?: number;
   nombre: string;
-  imagen: string;
-  categoria: string;
+  descripcion: string;
+  clasificacion: string;
   precio: number;
+  imagen: string;
   // Campos adicionales que puede necesitar el frontend
   precioFormateado?: string;  // Para mostrar precio con formato
   disponible?: boolean;       // Para manejar disponibilidad

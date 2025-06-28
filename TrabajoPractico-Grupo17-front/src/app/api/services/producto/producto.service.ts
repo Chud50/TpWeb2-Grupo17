@@ -16,23 +16,26 @@ export class ProductoService {
     {
       id: 1,
       nombre: "Remera Básica",
-      imagen: "remera.jpg",
-      categoria: "Remeras",
-      precio: 2500
+      descripcion: "Remera de algodón 100%, cómoda y versátil para uso diario",
+      clasificacion: "Remeras",
+      precio: 2500,
+      imagen: "remera.jpg"
     },
     {
       id: 2,
       nombre: "Jean Clásico",
-      imagen: "jean.jpg",
-      categoria: "Pantalones",
-      precio: 4500
+      descripcion: "Jean de mezclilla resistente, corte clásico y cómodo",
+      clasificacion: "Pantalones",
+      precio: 4500,
+      imagen: "jean.jpg"
     },
     {
       id: 3,
       nombre: "Buzo con Capucha",
-      imagen: "buzo.jpg",
-      categoria: "Buzos",
-      precio: 3200
+      descripcion: "Buzo con capucha, diseño argentino, ideal para el frío",
+      clasificacion: "Buzos",
+      precio: 3200,
+      imagen: "buzo.jpg"
     }
   ];
 
@@ -93,7 +96,7 @@ export class ProductoService {
         }),
         catchError((error) => {
           console.error('Error al obtener productos por categoría, usando datos mock:', error);
-          const filteredProducts = this.productos.filter(p => p.categoria.toLowerCase() === categoria.toLowerCase());
+          const filteredProducts = this.productos.filter(p => p.clasificacion.toLowerCase() === categoria.toLowerCase());
           return of(ProductoMapper.mapRestProductoArrayToProductoArray(filteredProducts));
         })
       );
@@ -169,7 +172,7 @@ export class ProductoService {
     return this.listProductos().pipe(
       map(productos => productos.filter(p => 
         p.nombre.toLowerCase().includes(termino.toLowerCase()) ||
-        p.categoria.toLowerCase().includes(termino.toLowerCase())
+        p.clasificacion.toLowerCase().includes(termino.toLowerCase())
       ))
     );
   }

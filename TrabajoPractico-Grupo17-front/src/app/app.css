@@ -1,0 +1,49 @@
+/* Estilos específicos del componente principal */
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Transiciones globales mejoradas */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+/* Loading spinner personalizado */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Focus states mejorados para accesibilidad */
+button:focus,
+.btn:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Hover effects globales */
+.card:hover,
+.btn:hover,
+.nav-link:hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Text selection styling */
+::selection {
+  background-color: var(--accent-color);
+  color: var(--secondary-color);
+}
+
+::-moz-selection {
+  background-color: var(--accent-color);
+  color: var(--secondary-color);
+}

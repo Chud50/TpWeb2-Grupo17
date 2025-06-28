@@ -70,4 +70,11 @@ export class CarritoComponent implements OnInit, OnDestroy {
   get carritoVacio(): boolean {
     return !this.carrito || this.carrito.items.length === 0;
   }
+
+  /**
+   * Método trackBy para mejorar el rendimiento del ngFor en el carrito
+   */
+  trackByItem(index: number, item: CarritoItem): number {
+    return item.producto.id || index;
+  }
 }

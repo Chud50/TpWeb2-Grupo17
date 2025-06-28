@@ -1,0 +1,163 @@
+/* === REGISTER PAGE STYLES === */
+.register-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--background-light) 0%, #f8f9fa 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.register-card {
+  background: var(--background-white);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  width: 100%;
+  max-width: 500px;
+  backdrop-filter: blur(10px);
+}
+
+.register-header {
+  text-align: center;
+  padding: 2rem 2rem 1rem 2rem;
+  background: linear-gradient(135deg, var(--accent-color) 0%, #e55a2b 100%);
+  color: var(--secondary-color);
+}
+
+.register-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-md);
+}
+
+.register-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+.register-subtitle {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  margin-bottom: 0;
+}
+
+.register-body {
+  padding: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  display: block;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-control {
+  background-color: var(--background-light);
+  border: 2px solid transparent;
+  border-radius: var(--border-radius);
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  transition: var(--transition);
+  width: 100%;
+}
+
+.form-control:focus {
+  background-color: var(--background-white);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.register-btn {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--border-radius);
+  margin-bottom: 1.5rem;
+}
+
+.alert {
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.alert-danger {
+  background-color: #fee;
+  color: #dc3545;
+  border-left: 4px solid #dc3545;
+}
+
+.login-link {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.login-text {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-right: 0.5rem;
+}
+
+.login-link-btn {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: var(--transition);
+}
+
+.login-link-btn:hover {
+  color: #e55a2b;
+  text-decoration: underline;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 576px) {
+  .register-container {
+    padding: 1rem;
+  }
+  
+  .register-card {
+    max-width: 100%;
+  }
+  
+  .register-header {
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+  }
+  
+  .register-body {
+    padding: 1.5rem;
+  }
+  
+  .register-title {
+    font-size: 1.5rem;
+  }
+  
+  /* En móvil, los campos van uno debajo del otro */
+  .row .col-md-6 {
+    margin-bottom: 0;
+  }
+  
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+}

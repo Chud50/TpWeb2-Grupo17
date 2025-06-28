@@ -14,9 +14,10 @@ export class ProductoMapper {
     return {
       id: productoRest.id,
       nombre: productoRest.nombre,
-      imagen: productoRest.imagen,
-      categoria: productoRest.categoria,
+      descripcion: productoRest.descripcion,
+      clasificacion: productoRest.clasificacion,
       precio: productoRest.precio,
+      imagen: productoRest.imagen,
       // Campos calculados para el frontend
       precioFormateado: `$${productoRest.precio.toFixed(2)}`,
       disponible: true // Por defecto disponible, se puede ajustar según lógica de negocio
@@ -37,9 +38,10 @@ export class ProductoMapper {
     return {
       id: producto.id,
       nombre: producto.nombre,
-      imagen: producto.imagen,
-      categoria: producto.categoria,
-      precio: producto.precio
+      descripcion: producto.descripcion,
+      clasificacion: producto.clasificacion,
+      precio: producto.precio,
+      imagen: producto.imagen
       // No incluimos los campos calculados del frontend
     };
   }

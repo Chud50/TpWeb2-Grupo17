@@ -5,7 +5,8 @@
 export interface ProductoRest {
   id?: number;
   nombre: string;
-  imagen: string;
-  categoria: string;
+  descripcion: string;
+  clasificacion: string;
   precio: number;
+  imagen: string;
 }
