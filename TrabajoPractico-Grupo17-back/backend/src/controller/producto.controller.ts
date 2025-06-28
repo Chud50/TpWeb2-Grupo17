@@ -69,14 +69,14 @@ export class ProductoController {
 
     public updateProducto = async (req: Request, res: Response) => {
         const id = Number(req.params.id);
-        const { nombre, precio, imagen, categoria } = req.body;
+        const { nombre, descripcion, clasificacion, precio, imagen } = req.body;
 
         if (isNaN(id)) {
             return res.status(400).json({ message: 'ID inválido' });
         }
 
         try {
-            const actualizado = await productoService.actualizarProducto(id, { nombre, imagen, categoria, precio });
+            const actualizado = await productoService.actualizarProducto(id, { nombre, descripcion, clasificacion, precio, imagen });
             res.status(200).json(actualizado);
         } catch (error) {
             console.log(error);
