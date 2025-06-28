@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CarritoService } from '../services/carrito.service';
 import { RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { CarritoService } from '../api/services/carrito/carrito.service';
+import { Carrito, CarritoItem } from '../modules/carrito/interfaces/carrito.interface';
 
 @Component({
   selector: 'app-carrito',
@@ -10,16 +12,62 @@ import { RouterModule } from '@angular/router';
   templateUrl: './carrito.html',
   styleUrl: './carrito.css'
 })
-export class CarritoComponent implements OnInit {
-  carrito: any[] = [];
+export class CarritoComponent implements OnInit, OnDestroy {
+  carrito: Carrito | null = null;
+  private subscription: Subscription = new Subscription();
 
   constructor(private carritoService: CarritoService) {}
 
   ngOnInit() {
-    this.carrito = this.carritoService.getCarrito();
+    // Suscribirse al estado reactivo del carrito
+    this.subscription.add(
+      this.carritoService.getCarrito().subscribe(carrito => {
+        this.carrito = carrito;
+        console.log('🛒 Carrito actualizado:', carrito);
+      })
+    );
   }
 
-  get total(): number {
-    return this.carrito.reduce((acc, p) => acc + p.precio, 0);
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  /**
+   * Aumentar cantidad de un producto
+   */
+  aumentarCantidad(item: CarritoItem): void {
+    this.carritoService.agregarProducto(item.producto, 1);
+  }
+
+  /**
+   * Disminuir cantidad de un producto
+   */
+  disminuirCantidad(item: CarritoItem): void {
+    this.carritoService.quitarProducto(item.producto.id!, 1);
+  }
+
+  /**
+   * Eliminar producto completamente del carrito
+   */
+  eliminarProducto(item: CarritoItem): void {
+    if (confirm(`¿Eliminar ${item.producto.nombre} del carrito?`)) {
+      this.carritoService.eliminarProducto(item.producto.id!);
+    }
+  }
+
+  /**
+   * Limpiar todo el carrito
+   */
+  limpiarCarrito(): void {
+    if (confirm('¿Limpiar todo el carrito?')) {
+      this.carritoService.limpiarCarrito();
+    }
+  }
+
+  /**
+   * Getter para verificar si el carrito está vacío
+   */
+  get carritoVacio(): boolean {
+    return !this.carrito || this.carrito.items.length === 0;
   }
 }

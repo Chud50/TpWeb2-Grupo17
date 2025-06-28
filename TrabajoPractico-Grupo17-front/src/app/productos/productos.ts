@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CarritoService } from '../services/carrito.service';
 import { RouterModule } from '@angular/router';
 import { ProductoService } from '../api/services/producto/producto.service';
+import { CarritoService } from '../api/services/carrito/carrito.service';
 import { Producto } from '../modules/productos/interfaces/producto.interface';
 
 @Component({
@@ -18,8 +18,8 @@ export class ProductosComponent implements OnInit {
   error = '';
 
   constructor(
-    private carritoService: CarritoService,
-    private productoService: ProductoService
+    private productoService: ProductoService,
+    private carritoService: CarritoService
   ) {}
 
   ngOnInit() {
@@ -56,7 +56,7 @@ export class ProductosComponent implements OnInit {
   }
 
   agregarAlCarrito(producto: Producto) {
-    this.carritoService.agregarProducto(producto);
+    this.carritoService.agregarProducto(producto, 1);
     alert(`${producto.nombre} agregado al carrito`);
   }
 }

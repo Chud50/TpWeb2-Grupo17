@@ -1,14 +1,119 @@
 <div class="container mt-4">
-  <h2>Mi Pedido</h2>
-  <div *ngIf="carrito.length === 0">
-    <p>No hay productos en el carrito.</p>
+  <h2>🛒 Mi Carrito</h2>
+  
+  <!-- Carrito vacío -->
+  <div *ngIf="carritoVacio" class="text-center py-5">
+    <p class="lead">No hay productos en el carrito.</p>
+    <a routerLink="/productos" class="btn btn-primary">
+      <i class="fas fa-shopping-bag"></i> Ir a comprar
+    </a>
   </div>
-  <div *ngIf="carrito.length > 0">
-    <ul class="list-group mb-3">
-      <li class="list-group-item" *ngFor="let producto of carrito">
-        <strong>{{ producto.nombre }}</strong> - ${{ producto.precio }}
-      </li>
-    </ul>
-    <p class="fw-bold">Total: ${{ total }}</p>
+  
+  <!-- Carrito con productos -->
+  <div *ngIf="!carritoVacio && carrito">
+    
+    <!-- Lista de productos -->
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h5>Productos ({{ carrito.cantidadTotal }} items)</h5>
+          </div>
+          <div class="card-body">
+            <div *ngFor="let item of carrito.items" class="d-flex align-items-center border-bottom py-3">
+              
+              <!-- Imagen del producto -->
+              <div class="me-3">
+                <img [src]="item.producto.imagen" [alt]="item.producto.nombre" 
+                     class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;">
+              </div>
+              
+              <!-- Info del producto -->
+              <div class="flex-grow-1">
+                <h6 class="mb-1">{{ item.producto.nombre }}</h6>
+                <small class="text-muted">{{ item.producto.categoria }}</small>
+                <div class="mt-1">
+                  <span class="fw-bold text-primary">{{ item.producto.precioFormateado }}</span>
+                </div>
+              </div>
+              
+              <!-- Controles de cantidad -->
+              <div class="d-flex align-items-center me-3">
+                <button class="btn btn-outline-secondary btn-sm" 
+                        (click)="disminuirCantidad(item)">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <span class="mx-3 fw-bold">{{ item.cantidad }}</span>
+                <button class="btn btn-outline-secondary btn-sm" 
+                        (click)="aumentarCantidad(item)">
+                  <i class="fas fa-plus"></i>
+                </button>
+              </div>
+              
+              <!-- Subtotal -->
+              <div class="me-3">
+                <div class="fw-bold">${{ item.subtotal.toFixed(2) }}</div>
+              </div>
+              
+              <!-- Botón eliminar -->
+              <div>
+                <button class="btn btn-outline-danger btn-sm" 
+                        (click)="eliminarProducto(item)"
+                        title="Eliminar producto">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Resumen del pedido -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <h5>Resumen del Pedido</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+              <span>Productos ({{ carrito.cantidadTotal }}):</span>
+              <span>${{ carrito.total.toFixed(2) }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Envío:</span>
+              <span class="text-success">Gratis</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between fw-bold">
+              <span>Total:</span>
+              <span class="text-primary">${{ carrito.total.toFixed(2) }}</span>
+            </div>
+            
+            <button class="btn btn-success w-100 mt-3">
+              <i class="fas fa-credit-card"></i> Proceder al Pago
+            </button>
+            
+            <button class="btn btn-outline-secondary w-100 mt-2" 
+                    (click)="limpiarCarrito()">
+              <i class="fas fa-trash"></i> Limpiar Carrito
+            </button>
+          </div>
+        </div>
+        
+        <!-- Info adicional -->
+        <div class="card mt-3">
+          <div class="card-body">
+            <small class="text-muted">
+              <i class="fas fa-info-circle"></i> 
+              Carrito guardado automáticamente
+            </small>
+            <br>
+            <small class="text-muted">
+              Última actualización: {{ carrito.fechaActualizacion | date:'short' }}
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
