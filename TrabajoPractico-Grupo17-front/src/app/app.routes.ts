@@ -11,7 +11,7 @@ export const routes: Routes = [
     { 
         path: 'productos', 
         component: ProductosComponent,
-        canActivate: [authGuard]
+       // canActivate: [authGuard]
     },
     { 
         path: 'carrito', 
