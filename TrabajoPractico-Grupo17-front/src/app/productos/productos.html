@@ -1,39 +1,27 @@
-<!-- Navegación moderna -->
-<nav class="navbar navbar-expand-lg navbar-light">
+<!-- Navegación -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
-    <a class="navbar-brand" href="#">
-      <i class="fas fa-tshirt me-2"></i>APPI-ROPA
-    </a>
+    <a class="navbar-brand" href="#">APPI-ROPA</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Categorías</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Outlet</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contacto</a>
-        </li>
+        <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Categorías</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Outlet</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
       </ul>
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/carrito']">
-            <i class="fas fa-shopping-bag me-1"></i>
-            Carrito
-            <span class="badge bg-accent ms-1" *ngIf="cantidadEnCarrito > 0">{{ cantidadEnCarrito }}</span>
+            <i class="fas fa-shopping-bag me-1"></i>Carrito
+            <span class="badge bg-primary ms-1" *ngIf="cantidadEnCarrito > 0">{{ cantidadEnCarrito }}</span>
           </a>
         </li>
         <li class="nav-item">
           <button class="btn btn-outline-primary btn-sm ms-2" (click)="logout()">
-            <i class="fas fa-sign-out-alt me-1"></i>
-            Cerrar Sesión
+            <i class="fas fa-sign-out-alt me-1"></i>Cerrar Sesión
           </button>
         </li>
       </ul>
@@ -41,148 +29,102 @@
   </div>
 </nav>
 
-<!-- Hero Section -->
-<section class="hero-section">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-6">
-        <h1 class="hero-title">Nueva Colección</h1>
-        <p class="hero-subtitle">Descubre las últimas tendencias en moda urbana</p>
-        <div class="hero-badges">
-          <span class="badge bg-accent me-2">Envío gratis</span>
-          <span class="badge bg-outline-dark">12 cuotas sin interés</span>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="hero-image">
-          <i class="fas fa-shopping-bag hero-icon"></i>
-        </div>
-      </div>
-    </div>
+<!-- Hero -->
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h1 class="display-5">Nueva Colección</h1>
+    <p class="lead">Descubrí las últimas tendencias en moda urbana</p>
   </div>
 </section>
 
-<!-- Contenido principal -->
-<main class="main-content">
-  <div class="container">
-    
-    <!-- Header de productos -->
-    <div class="products-header">
-      <div class="row align-items-center mb-4">
-        <div class="col-md-6">
-          <h2 class="section-title">Nuestros Productos</h2>
-          <p class="section-subtitle">Encuentra tu estilo perfecto</p>
-        </div>
-        <div class="col-md-6 text-md-end">
-          <div class="filters-container">
-            <!-- Preparado para filtros futuros -->
-            <button class="btn btn-outline-primary me-2">
-              <i class="fas fa-filter me-1"></i>Filtros
-            </button>
-            <button class="btn btn-outline-primary">
-              <i class="fas fa-sort me-1"></i>Ordenar
-            </button>
-          </div>
-        </div>
-      </div>
+<!-- Filtros y Orden -->
+<div class="container my-4">
+  <div class="d-flex justify-content-end gap-3">
+
+    <!-- Filtros -->
+    <div class="btn-group">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <i class="fas fa-filter me-1"></i>Filtros
+      </button>
+      <ul class="dropdown-menu p-3" style="min-width: 250px;">
+        <li>
+          <label class="form-label">Categoría</label>
+          <select class="form-select" [(ngModel)]="filtros.categoria" name="categoria">
+            <option value="">Todas</option>
+            <option *ngFor="let cat of categorias" [value]="cat">{{ cat | titlecase }}</option>
+          </select>
+        </li>
+        <li class="mt-2">
+          <label class="form-label">Precio mínimo</label>
+          <input type="number" class="form-control" [(ngModel)]="filtros.precioMin" name="precioMin" min="0" />
+        </li>
+        <li class="mt-2">
+          <label class="form-label">Precio máximo</label>
+          <input type="number" class="form-control" [(ngModel)]="filtros.precioMax" name="precioMax" min="0" />
+        </li>
+        <li class="mt-3 text-end">
+          <button class="btn btn-sm btn-primary" (click)="aplicarFiltros()">Aplicar</button>
+          <button class="btn btn-sm btn-outline-secondary ms-2" (click)="limpiarFiltros()">Limpiar</button>
+        </li>
+      </ul>
     </div>
 
-    <!-- Estados de carga y error -->
-    <div *ngIf="loading" class="loading-state">
-      <div class="text-center py-5">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Cargando...</span>
-        </div>
-        <p class="mt-3 text-muted">Cargando productos...</p>
-      </div>
+    <!-- Orden -->
+    <div class="btn-group">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <i class="fas fa-sort me-1"></i>Ordenar
+      </button>
+      <ul class="dropdown-menu p-3" style="min-width: 220px;">
+        <li>
+          <label class="form-label">Ordenar por</label>
+          <select class="form-select" [(ngModel)]="ordenSeleccionado" name="orden">
+            <option value="precioAsc">Precio: Menor a Mayor</option>
+            <option value="precioDesc">Precio: Mayor a Menor</option>
+            <option value="nombreAsc">Nombre: A - Z</option>
+            <option value="nombreDesc">Nombre: Z - A</option>
+          </select>
+        </li>
+        <li class="mt-3 text-end">
+          <button class="btn btn-sm btn-primary" (click)="aplicarOrden()">Aplicar</button>
+        </li>
+      </ul>
     </div>
-
-    <div *ngIf="error" class="alert alert-warning alert-modern">
-      <i class="fas fa-exclamation-triangle me-2"></i>{{ error }}
-    </div>
-
-    <!-- Grid de productos -->
-    <div class="products-grid" *ngIf="!loading">
-      <div class="row g-4">
-        <div class="col-lg-4 col-md-6" *ngFor="let producto of productos; trackBy: trackByProducto">
-          <div class="product-card fade-in-up">
-            <div class="product-image-container">
-              <img [src]="producto.imagen" 
-                   class="product-image" 
-                   [alt]="producto.nombre"
-                   loading="lazy">
-              <div class="product-overlay">
-                <button class="btn btn-accent quick-add-btn" 
-                        (click)="agregarAlCarrito(producto)">
-                  <i class="fas fa-plus me-1"></i>Agregar
-                </button>
-              </div>
-              <div class="product-badge" *ngIf="producto.clasificacion === 'outlet'">
-                <span class="badge bg-accent">Outlet</span>
-              </div>
-            </div>
-            <div class="product-info">
-              <div class="product-category">{{ producto.clasificacion | titlecase }}</div>
-              <h5 class="product-title">{{ producto.nombre }}</h5>
-              <p class="product-description">{{ producto.descripcion }}</p>
-              <div class="product-price">
-                <span class="price-current">{{ producto.precioFormateado }}</span>
-              </div>
-              <button class="btn btn-primary product-btn w-100 mt-3" 
-                      (click)="agregarAlCarrito(producto)">
-                <i class="fas fa-shopping-bag me-2"></i>Agregar al carrito
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Estado vacío (si no hay productos) -->
-    <div *ngIf="!loading && productos.length === 0" class="empty-state">
-      <div class="text-center py-5">
-        <i class="fas fa-box-open empty-icon"></i>
-        <h3 class="mt-3">No hay productos disponibles</h3>
-        <p class="text-muted">Vuelve más tarde para ver nuestras novedades</p>
-      </div>
-    </div>
-
   </div>
-</main>
+</div>
 
-<!-- Footer moderno -->
-<footer class="footer">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <h5 class="footer-title">
-          <i class="fas fa-tshirt me-2"></i>APPI-ROPA
-        </h5>
-        <p class="footer-text">Moda urbana para todos los estilos</p>
-      </div>
-      <div class="col-md-3">
-        <h6 class="footer-subtitle">Contacto</h6>
-        <p class="footer-text small">
-          <i class="fas fa-envelope me-1"></i>info&#64;appiropa.com<br>
-          <i class="fas fa-phone me-1"></i>+54 11 1234-5678
-        </p>
-      </div>
-      <div class="col-md-3">
-        <h6 class="footer-subtitle">Síguenos</h6>
-        <div class="social-links">
-          <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
-          <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+<!-- Carga -->
+<div *ngIf="loading" class="container text-center py-5">
+  <div class="spinner-border text-primary"></div>
+  <p class="mt-3">Cargando productos...</p>
+</div>
+
+<!-- Error -->
+<div *ngIf="error" class="container">
+  <div class="alert alert-warning mt-4">{{ error }}</div>
+</div>
+
+<!-- Productos -->
+<div class="container" *ngIf="!loading && productos.length > 0">
+  <div class="row g-4">
+    <div class="col-md-4" *ngFor="let producto of productos; trackBy: trackByProducto">
+      <div class="card h-100">
+        <img [src]="producto.imagen" class="card-img-top" [alt]="producto.nombre" />
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ producto.nombre }}</h5>
+          <p class="card-text">{{ producto.descripcion }}</p>
+          <p class="card-text"><strong>$ {{ producto.precio }}</strong></p>
+          <button class="btn btn-primary mt-auto" (click)="agregarAlCarrito(producto)">
+            <i class="fas fa-cart-plus me-1"></i>Agregar al carrito
+          </button>
         </div>
-      </div>
-    </div>
-    <hr class="footer-divider">
-    <div class="row">
-      <div class="col-12 text-center">
-        <p class="footer-copyright">
-          © 2025 APPI-ROPA. Todos los derechos reservados. | Desarrollado por Grupo 17
-        </p>
       </div>
     </div>
   </div>
-</footer>
+</div>
+
+<!-- Sin resultados -->
+<div *ngIf="!loading && productos.length === 0" class="container text-center py-5">
+  <i class="fas fa-box-open fa-3x mb-3 text-muted"></i>
+  <h4>No hay productos disponibles</h4>
+  <p>Proba modificando los filtros o volvé más tarde.</p>
+</div>
