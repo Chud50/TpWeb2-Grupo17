@@ -22,12 +22,15 @@ export class ProductosComponent implements OnInit {
   cantidadEnCarrito = 0;
 
   filtros = {
-    categoria: '',
-    precioMin: null as number | null,
-    precioMax: null as number | null
-  };
+  categoria: '',
+  precioMin: null as number | null,
+  precioMax: null as number | null,
+  nombre: '',
+  descripcion: ''
+};
 
-  categorias: string[] = ['camisetas', 'pantalones', 'accesorios', 'outlet'];
+
+  categorias: string[] = ['Ropa', 'Electrónica', 'Libros'];
 
   ordenSeleccionado = '';
 
@@ -69,25 +72,30 @@ export class ProductosComponent implements OnInit {
     });
   }
 
-  aplicarFiltros() {
-    console.log('Aplicando filtros:', this.filtros);
-    this.productos = this.productosOriginal.filter(prod => {
-      const matchCategoria = this.filtros.categoria ? prod.clasificacion === this.filtros.categoria : true;
-      const matchPrecioMin = this.filtros.precioMin != null ? prod.precio >= this.filtros.precioMin : true;
-      const matchPrecioMax = this.filtros.precioMax != null ? prod.precio <= this.filtros.precioMax : true;
-      return matchCategoria && matchPrecioMin && matchPrecioMax;
-    });
-    console.log('Productos filtrados:', this.productos);
-  }
+ aplicarFiltros() {
+  console.log('Aplicando filtros:', this.filtros);
+  this.productos = this.productosOriginal.filter(prod => {
+    const matchCategoria = this.filtros.categoria ? prod.clasificacion === this.filtros.categoria : true;
+    const matchPrecioMin = this.filtros.precioMin != null ? prod.precio >= this.filtros.precioMin : true;
+    const matchPrecioMax = this.filtros.precioMax != null ? prod.precio <= this.filtros.precioMax : true;
+    const matchNombre = this.filtros.nombre ? prod.nombre.toLowerCase().includes(this.filtros.nombre.toLowerCase()) : true;
+    const matchDescripcion = this.filtros.descripcion ? prod.descripcion.toLowerCase().includes(this.filtros.descripcion.toLowerCase()) : true;
 
-  limpiarFiltros() {
-    this.filtros = {
-      categoria: '',
-      precioMin: null,
-      precioMax: null
-    };
-    this.productos = [...this.productosOriginal];
-  }
+    return matchCategoria && matchPrecioMin && matchPrecioMax && matchNombre && matchDescripcion;
+  });
+  console.log('Productos filtrados:', this.productos);
+}
+
+limpiarFiltros() {
+  this.filtros = {
+    categoria: '',
+    precioMin: null,
+    precioMax: null,
+    nombre: '',
+    descripcion: ''
+  };
+  this.productos = [...this.productosOriginal];
+}
 
   aplicarOrden() {
     console.log('Aplicando orden:', this.ordenSeleccionado);
