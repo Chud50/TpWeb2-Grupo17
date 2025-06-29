@@ -120,10 +120,18 @@ limpiarFiltros() {
     console.log('Productos ordenados:', this.productos);
   }
 
-  agregarAlCarrito(producto: Producto) {
-    this.carritoService.agregarProducto(producto, 1);
-    alert(`${producto.nombre} agregado al carrito`);
-  }
+toastMensaje = '';
+mostrarToast = false;
+
+agregarAlCarrito(producto: Producto) {
+  this.carritoService.agregarProducto(producto, 1);
+  this.toastMensaje = `${producto.nombre} agregado al carrito`;
+  this.mostrarToast = true;
+  setTimeout(() => {
+    this.mostrarToast = false;
+  }, 3000); // se oculta a los 3 segundos
+}
+
 
   logout() {
     this.authService.logout();

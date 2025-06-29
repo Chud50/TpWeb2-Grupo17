@@ -17,6 +17,9 @@ export class CarritoComponent implements OnInit, OnDestroy {
   carrito: Carrito | null = null;
   private subscription: Subscription = new Subscription();
 
+  toastMensaje = '';
+  mostrarToast = false;
+
   constructor(
     private carritoService: CarritoService,
     private authService: AuthService,
@@ -24,7 +27,6 @@ export class CarritoComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    // Suscribirse al estado reactivo del carrito
     this.subscription.add(
       this.carritoService.getCarrito().subscribe(carrito => {
         this.carrito = carrito;
@@ -37,48 +39,28 @@ export class CarritoComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  /**
-   * Aumentar cantidad de un producto
-   */
   aumentarCantidad(item: CarritoItem): void {
     this.carritoService.agregarProducto(item.producto, 1);
   }
 
-  /**
-   * Disminuir cantidad de un producto
-   */
   disminuirCantidad(item: CarritoItem): void {
     this.carritoService.quitarProducto(item.producto.id!, 1);
   }
 
-  /**
-   * Eliminar producto completamente del carrito
-   */
   eliminarProducto(item: CarritoItem): void {
-    if (confirm(`¿Eliminar ${item.producto.nombre} del carrito?`)) {
-      this.carritoService.eliminarProducto(item.producto.id!);
-    }
+    this.carritoService.eliminarProducto(item.producto.id!);
+    this.mostrarNotificacion(`${item.producto.nombre} eliminado del carrito`);
   }
 
-  /**
-   * Limpiar todo el carrito
-   */
   limpiarCarrito(): void {
-    if (confirm('¿Limpiar todo el carrito?')) {
-      this.carritoService.limpiarCarrito();
-    }
+    this.carritoService.limpiarCarrito();
+    this.mostrarNotificacion('Carrito limpiado exitosamente');
   }
 
-  /**
-   * Getter para verificar si el carrito está vacío
-   */
   get carritoVacio(): boolean {
     return !this.carrito || this.carrito.items.length === 0;
   }
 
-  /**
-   * Método trackBy para mejorar el rendimiento del ngFor en el carrito
-   */
   trackByItem(index: number, item: CarritoItem): number {
     return item.producto.id || index;
   }
@@ -86,5 +68,13 @@ export class CarritoComponent implements OnInit, OnDestroy {
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  mostrarNotificacion(mensaje: string) {
+    this.toastMensaje = mensaje;
+    this.mostrarToast = true;
+    setTimeout(() => {
+      this.mostrarToast = false;
+    }, 3000);
   }
 }
