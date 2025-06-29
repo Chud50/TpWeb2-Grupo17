@@ -188,7 +188,25 @@
     
   </div>
 </main>
-
+<!-- Toast de notificación para carrito -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+  <div
+    class="toast align-items-center text-white bg-danger border-0"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+    [class.show]="mostrarToast"
+    [class.hide]="!mostrarToast"
+    style="opacity: 1; transition: opacity 0.5s ease-in-out;"
+  >
+    <div class="d-flex">
+      <div class="toast-body">
+        {{ toastMensaje }}
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="mostrarToast = false"></button>
+    </div>
+  </div>
+</div>
 <!-- Footer moderno -->
 <footer class="footer">
   <div class="container">
