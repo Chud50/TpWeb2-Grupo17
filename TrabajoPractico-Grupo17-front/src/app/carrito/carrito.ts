@@ -66,6 +66,7 @@ export class CarritoComponent implements OnInit, OnDestroy {
   }
 
   logout() {
+      this.carritoService.limpiarCarrito(); // Limpiar el carrito al cerrar sesión
     this.authService.logout();
     this.router.navigate(['/login']);
   }

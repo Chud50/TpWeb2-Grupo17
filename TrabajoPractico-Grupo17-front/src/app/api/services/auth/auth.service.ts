@@ -6,6 +6,7 @@ import { Usuario } from '../../../modules/usuarios/interfaces/usuario.interface'
 import { UsuarioRest } from '../usuario/interfaces/usuario.interface.rest';
 import { UsuarioMapper } from '../usuario/mappings/usuario.mapper';
 import { LoginRequest, RegisterRequest, AuthResponse, AuthState } from './interfaces/auth.interface';
+import { CarritoService } from '../carrito/carrito.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class AuthService {
   public authState$ = this.authStateSubject.asObservable();
   public isLoggedIn$ = this.authState$.pipe(map(state => state.isAuthenticated));
 
-  constructor() {
+  constructor(private carritoService: CarritoService) {
     this.initializeAuthState();
   }
 
@@ -182,6 +183,7 @@ export class AuthService {
    */
   logout(): void {
     // En un app real, invalidaríamos el token en el backend
+    this.carritoService.limpiarCarrito();
     this.clearAuthData();
   }
 
