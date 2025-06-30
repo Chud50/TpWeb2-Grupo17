@@ -19,6 +19,8 @@ export class RegistroComponent {
   password: string = '';
   confirmPassword: string = '';
   error: string = '';
+  toastMensaje: string = '';
+  mostrarToast: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -32,7 +34,7 @@ export class RegistroComponent {
       this.error = 'Las contraseñas no coinciden';
       return;
     }
-    
+
     try {
       console.log('🐛 DEBUG: Iniciando registro...');
       const result = await this.authService.register({
@@ -43,16 +45,28 @@ export class RegistroComponent {
         direccion: this.direccion
       }).toPromise();
       console.log('🐛 DEBUG: Resultado del registro:', result);
-      
+
       if (result && result.success) {
-        alert(result.message || '¡Usuario registrado con éxito!');
-        this.router.navigate(['/login']);
+        this.toastMensaje = result.message || '¡Usuario registrado con éxito!';
+        this.mostrarToast = true;
+        setTimeout(() => {
+          this.mostrarToast = false;
+          this.router.navigate(['/login']); // Navegar después de ocultar el toast
+        }, 3000);
       } else {
-        this.error = result?.message || 'Error al registrar usuario';
+        this.toastMensaje = result?.message || 'Error al registrar usuario';
+        this.mostrarToast = true;
+        setTimeout(() => {
+          this.mostrarToast = false;
+        }, 3000);
       }
     } catch (error) {
       console.error('Error en registro:', error);
-      this.error = 'Error al conectar con el servidor';
+      this.toastMensaje = 'Error al conectar con el servidor';
+      this.mostrarToast = true;
+      setTimeout(() => {
+        this.mostrarToast = false;
+      }, 3000);
     }
   }
 
