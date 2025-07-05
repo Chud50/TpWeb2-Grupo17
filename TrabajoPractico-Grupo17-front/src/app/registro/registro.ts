@@ -24,6 +24,19 @@ export class RegistroComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  private validarPassword(password: string): string | null {
+    if (password.length < 6) {
+      return 'La contraseña debe tener al menos 6 caracteres.';
+    }
+    if (!/[A-Z]/.test(password)) {
+      return 'La contraseña debe contener al menos una letra mayúscula.';
+    }
+    if (!/[0-9]/.test(password)) {
+      return 'La contraseña debe contener al menos un número.';
+    }
+    return null;
+  }
+
   async onRegister() {
     this.error = '';
     if (!this.nombre || !this.apellido || !this.direccion || !this.email || !this.password) {
@@ -32,6 +45,12 @@ export class RegistroComponent {
     }
     if (this.password !== this.confirmPassword) {
       this.error = 'Las contraseñas no coinciden';
+      return;
+    }
+
+    const passwordError = this.validarPassword(this.password);
+    if (passwordError) {
+      this.error = passwordError;
       return;
     }
 
@@ -74,4 +93,6 @@ export class RegistroComponent {
     event.preventDefault();
     this.router.navigate(['/login']);
   }
+
+
 }

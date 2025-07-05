@@ -42,8 +42,27 @@ export class UsuarioController {
         }
     }
 
+    private validarPassword(password: string): string | null {
+        if (password.length < 6) {
+            return 'La contraseña debe tener al menos 6 caracteres.';
+        }
+        if (!/[A-Z]/.test(password)) {
+            return 'La contraseña debe contener al menos una letra mayúscula.';
+        }
+        if (!/[0-9]/.test(password)) {
+            return 'La contraseña debe contener al menos un número.';
+        }
+        return null;
+    }
+
     public createUsuario = async (req: Request, res: Response) => {
         try {
+            // Validar la contraseña antes de crear el usuario
+            const passwordError = this.validarPassword(req.body.password);
+            if (passwordError) {
+                return res.status(400).json({ message: passwordError });
+            }
+
             console.log('📝 DEBUG: Datos recibidos en backend:', req.body);
             const usuario = await usuarioService.crearUsuario(req.body)
             console.log('✅ DEBUG: Usuario creado:', usuario);
