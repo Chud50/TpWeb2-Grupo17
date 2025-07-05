@@ -5,11 +5,12 @@ import { Subscription } from 'rxjs';
 import { CarritoService } from '../api/services/carrito/carrito.service';
 import { AuthService } from '../api/services/auth/auth.service';
 import { Carrito, CarritoItem } from '../modules/carrito/interfaces/carrito.interface';
+import { NavbarComponent } from '../shared/navbar/navbar';
 
 @Component({
   selector: 'app-carrito',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, NavbarComponent],
   templateUrl: './carrito.html',
   styleUrl: './carrito.css'
 })

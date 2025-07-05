@@ -1,0 +1,54 @@
+/* Navbar personalizado */
+.navbar-brand {
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.navbar-brand:hover {
+  color: var(--accent-color) !important;
+}
+
+.nav-link {
+  cursor: pointer;
+  position: relative;
+  transition: var(--transition);
+}
+
+.nav-link.active {
+  color: var(--accent-color) !important;
+  font-weight: 600;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 2px;
+  background-color: var(--accent-color);
+  border-radius: 1px;
+}
+
+.nav-link:hover {
+  color: var(--accent-color) !important;
+}
+
+/* Badge del carrito */
+.badge {
+  font-size: 0.7rem;
+  border-radius: 50%;
+  padding: 0.3em 0.5em;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .navbar-nav {
+    margin-top: 1rem;
+  }
+  
+  .nav-link.active::after {
+    display: none;
+  }
+}

@@ -1,0 +1,45 @@
+<!-- Navegación -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" (click)="navegarA('/productos')">APPI-ROPA</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" 
+             [class.active]="isActiveRoute('productos')" 
+             (click)="navegarA('/productos')">
+            Inicio
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" 
+             [class.active]="isActiveRoute('categorias')" 
+             [routerLink]="['/categorias']">
+            Categorías
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contacto</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" 
+             [class.active]="isActiveRoute('carrito')" 
+             [routerLink]="['/carrito']">
+            <i class="fas fa-shopping-bag me-1"></i>Carrito
+            <span class="badge bg-primary ms-1" *ngIf="cantidadEnCarrito > 0">{{ cantidadEnCarrito }}</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-outline-primary btn-sm ms-2" (click)="logout()">
+            <i class="fas fa-sign-out-alt me-1"></i>Cerrar Sesión
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

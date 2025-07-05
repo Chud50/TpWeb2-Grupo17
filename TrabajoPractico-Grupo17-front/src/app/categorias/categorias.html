@@ -1,0 +1,46 @@
+<!-- Navegación -->
+<app-navbar activeRoute="categorias"></app-navbar>
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container text-center">
+    <h1 class="hero-title fade-in-up">NUESTRAS CATEGORÍAS</h1>
+    <p class="hero-subtitle fade-in-up">Elegí tu estilo, encontrá lo que buscás</p>
+  </div>
+</section>
+
+<!-- Categorías Grid -->
+<section class="categorias-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-4 col-md-6 mb-4" *ngFor="let categoria of categorias">
+        <div class="categoria-card" (click)="navegarAProductos(categoria.clasificacion)">
+          <div class="categoria-image">
+            <img [src]="categoria.imagen" [alt]="categoria.nombre" class="img-fluid">
+            <div class="categoria-overlay">
+              <div class="categoria-content">
+                <h3 class="categoria-title">{{ categoria.nombre }}</h3>
+                <p class="categoria-description">{{ categoria.descripcion }}</p>
+                <button class="btn btn-outline-light categoria-btn">
+                  VER COLECCIÓN
+                  <i class="fas fa-arrow-right ms-2"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section">
+  <div class="container text-center">
+    <h2 class="cta-title">¿No encontrás lo que buscás?</h2>
+    <p class="cta-description">Explorá toda nuestra colección completa</p>
+    <button class="btn btn-primary btn-lg" (click)="navegarAProductos()">
+      VER TODOS LOS PRODUCTOS
+    </button>
+  </div>
+</section>

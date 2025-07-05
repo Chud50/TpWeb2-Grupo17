@@ -6,11 +6,12 @@ import { CarritoService } from '../api/services/carrito/carrito.service';
 import { AuthService } from '../api/services/auth/auth.service';
 import { Producto } from '../modules/productos/interfaces/producto.interface';
 import { FormsModule } from '@angular/forms';
+import { NavbarComponent } from '../shared/navbar/navbar';
 
 @Component({
   selector: 'app-productos',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, NavbarComponent],
   templateUrl: './productos.html',
   styleUrls: ['./productos.css']
 })
