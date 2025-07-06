@@ -44,29 +44,14 @@ export class ProductosComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.cargarProductos();
-    this.actualizarCantidadCarrito();
+    // Primero cargamos filtros desde URL
+    this.cargarFiltrosDesdeQueryParams();
     
-    // Verificar si hay filtro de categoría en query params
-    this.route.queryParams.subscribe(params => {
-      if (params['categoria']) {
-        console.log('📂 Filtro de categoría detectado:', params['categoria']);
-        console.log('📊 Productos cargados:', this.productosOriginal.length);
-        console.log('🏷️ Clasificaciones en BD:', this.productosOriginal.map(p => p.clasificacion));
-        
-        this.filtros.categoria = params['categoria'];
-        
-        // Si los productos ya están cargados, aplicar filtro inmediatamente
-        if (this.productosOriginal.length > 0) {
-          this.aplicarFiltros();
-        } else {
-          // Si no, esperar a que se carguen
-          setTimeout(() => {
-            this.aplicarFiltros();
-          }, 500);
-        }
-      }
-    });
+    // Luego cargamos productos
+    this.cargarProductos();
+    
+    // Finalmente actualizamos carrito
+    this.actualizarCantidadCarrito();
   }
 
   actualizarCantidadCarrito() {
@@ -89,13 +74,10 @@ export class ProductosComponent implements OnInit {
         this.loading = false;
         
         console.log('📦 Productos cargados desde BD:', productos.length);
-        console.log('🏷️ Clasificaciones disponibles:', [...new Set(productos.map(p => p.clasificacion))]);
+        console.log('🔍 Filtros actuales:', this.filtros);
         
-        // Aplicar filtro si hay uno pendiente
-        if (this.filtros.categoria) {
-          console.log('🔄 Aplicando filtro pendiente:', this.filtros.categoria);
-          this.aplicarFiltros();
-        }
+        // SIEMPRE aplicar filtros después de cargar, aunque estén vacíos
+        this.aplicarFiltrosSinActualizarURL();
       },
       error: (error) => {
         this.error = 'Error al cargar productos del servidor';
@@ -109,9 +91,7 @@ export class ProductosComponent implements OnInit {
   
   this.productos = this.productosOriginal.filter(prod => {
     // Hacer comparación case-insensitive para categoría
-    const matchCategoria = this.filtros.categoria ? 
-      prod.clasificacion.toLowerCase() === this.filtros.categoria.toLowerCase() : true;
-    
+    const matchCategoria = this.filtros.categoria ? prod.clasificacion.toLowerCase() === this.filtros.categoria.toLowerCase() : true;
     const matchPrecioMin = this.filtros.precioMin != null ? prod.precio >= this.filtros.precioMin : true;
     const matchPrecioMax = this.filtros.precioMax != null ? prod.precio <= this.filtros.precioMax : true;
     const matchNombre = this.filtros.nombre ? prod.nombre.toLowerCase().includes(this.filtros.nombre.toLowerCase()) : true;
@@ -121,9 +101,14 @@ export class ProductosComponent implements OnInit {
   });
   
   console.log('✅ Productos filtrados:', this.productos.length);
+  
+  // Actualizar query params para persistir filtros
+  this.actualizarQueryParams();
 }
 
 limpiarFiltros() {
+  console.log('🧹 Limpiando todos los filtros');
+  
   this.filtros = {
     categoria: '',
     precioMin: null,
@@ -131,9 +116,10 @@ limpiarFiltros() {
     nombre: '',
     descripcion: ''
   };
+  
   this.productos = [...this.productosOriginal];
   
-  // Limpiar query params si existen
+  // Limpiar query params completamente
   this.router.navigate(['/productos']);
 }
 
@@ -176,5 +162,101 @@ agregarAlCarrito(producto: Producto) {
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  /**
+   * Actualiza los query parameters con los filtros actuales
+   */
+  actualizarQueryParams() {
+    const queryParams: any = {};
+    
+    // Solo agregar parámetros si tienen valor
+    if (this.filtros.categoria) {
+      queryParams.categoria = this.filtros.categoria;
+    }
+    if (this.filtros.precioMin != null) {
+      queryParams.precioMin = this.filtros.precioMin;
+    }
+    if (this.filtros.precioMax != null) {
+      queryParams.precioMax = this.filtros.precioMax;
+    }
+    if (this.filtros.nombre) {
+      queryParams.nombre = this.filtros.nombre;
+    }
+    if (this.filtros.descripcion) {
+      queryParams.descripcion = this.filtros.descripcion;
+    }
+    
+    // Navegar sin recargar la página
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: queryParams,
+      queryParamsHandling: 'replace'
+    });
+    
+    console.log('🔗 Query params actualizados:', queryParams);
+  }
+
+  /**
+   * Carga todos los filtros desde query parameters
+   */
+  cargarFiltrosDesdeQueryParams() {
+    this.route.queryParams.subscribe(params => {
+      console.log('📥 Cargando filtros desde query params:', params);
+      
+      // Solo actualizar si realmente hay parámetros en la URL
+      const hasParams = Object.keys(params).length > 0;
+      
+      if (hasParams) {
+        this.filtros.categoria = params['categoria'] || '';
+        this.filtros.precioMin = params['precioMin'] ? Number(params['precioMin']) : null;
+        this.filtros.precioMax = params['precioMax'] ? Number(params['precioMax']) : null;
+        this.filtros.nombre = params['nombre'] || '';
+        this.filtros.descripcion = params['descripcion'] || '';
+        
+        console.log('🔄 Filtros cargados desde URL:', this.filtros);
+      } else {
+        console.log('📭 No hay parámetros en URL, manteniendo filtros actuales');
+      }
+      
+      // Aplicar filtros si hay productos cargados
+      if (this.productosOriginal.length > 0) {
+        this.aplicarFiltrosSinActualizarURL();
+      }
+    });
+  }
+
+  /**
+   * Aplica filtros sin actualizar URL (para evitar bucle infinito)
+   */
+  aplicarFiltrosSinActualizarURL() {
+    console.log('🔍 Aplicando filtros sin actualizar URL:', this.filtros);
+    
+    this.productos = this.productosOriginal.filter(prod => {
+      const matchCategoria = this.filtros.categoria ? 
+        prod.clasificacion.toLowerCase() === this.filtros.categoria.toLowerCase() : true;
+      
+      const matchPrecioMin = this.filtros.precioMin != null ? prod.precio >= this.filtros.precioMin : true;
+      const matchPrecioMax = this.filtros.precioMax != null ? prod.precio <= this.filtros.precioMax : true;
+      const matchNombre = this.filtros.nombre ? prod.nombre.toLowerCase().includes(this.filtros.nombre.toLowerCase()) : true;
+      const matchDescripcion = this.filtros.descripcion ? prod.descripcion.toLowerCase().includes(this.filtros.descripcion.toLowerCase()) : true;
+      
+      return matchCategoria && matchPrecioMin && matchPrecioMax && matchNombre && matchDescripcion;
+    });
+    
+    console.log('✅ Productos filtrados:', this.productos.length);
+  }
+
+  /**
+   * Verifica si hay algún filtro activo
+   */
+  tieneAlgunFiltroActivo(): boolean {
+    return !!(
+      this.filtros.categoria ||
+      this.filtros.precioMin != null ||
+      this.filtros.precioMax != null ||
+      this.filtros.nombre ||
+      this.filtros.descripcion
+    );
   }
 }

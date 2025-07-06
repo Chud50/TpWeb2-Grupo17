@@ -13,16 +13,21 @@
       <span *ngIf="filtros.categoria">Explorá nuestra colección de {{ filtros.categoria }}</span>
     </p>
     
-    <!-- Breadcrumb cuando hay filtro -->
-    <nav *ngIf="filtros.categoria" aria-label="breadcrumb" class="mt-3">
+    <!-- Breadcrumb cuando hay filtros activos -->
+    <nav *ngIf="tieneAlgunFiltroActivo()" aria-label="breadcrumb" class="mt-3">
       <ol class="breadcrumb justify-content-center">
         <li class="breadcrumb-item">
           <a class="text-decoration-none" (click)="limpiarFiltros()">Inicio</a>
         </li>
-        <li class="breadcrumb-item">
+        <li class="breadcrumb-item" *ngIf="filtros.categoria">
           <a class="text-decoration-none" [routerLink]="['/categorias']">Categorías</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">{{ filtros.categoria | titlecase }}</li>
+        <li class="breadcrumb-item active" aria-current="page" *ngIf="filtros.categoria">
+          {{ filtros.categoria | titlecase }}
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" *ngIf="!filtros.categoria && tieneAlgunFiltroActivo()">
+          Filtros aplicados
+        </li>
       </ol>
     </nav>
   </div>

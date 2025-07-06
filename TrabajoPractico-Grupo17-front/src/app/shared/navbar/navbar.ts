@@ -32,7 +32,22 @@ export class NavbarComponent {
   }
 
   navegarA(ruta: string) {
-    this.router.navigate([ruta]);
+    console.log('🔗 Navegando a:', ruta, 'desde:', this.router.url);
+    
+    // Si navegamos a productos, preservar query params actuales
+    if (ruta === '/productos') {
+      this.router.navigate([ruta], { 
+        queryParamsHandling: 'preserve' 
+      });
+    } else if (ruta === '/carrito') {
+      // Para carrito también preservar query params de productos
+      this.router.navigate([ruta], { 
+        queryParamsHandling: 'preserve' 
+      });
+    } else {
+      // Para otras rutas (como categorías), navegar normalmente
+      this.router.navigate([ruta]);
+    }
   }
 
   isActiveRoute(route: string): boolean {

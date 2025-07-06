@@ -79,4 +79,11 @@ export class CarritoComponent implements OnInit, OnDestroy {
       this.mostrarToast = false;
     }, 3000);
   }
+
+  navegarAProductos(): void {
+    console.log('🔗 Navegando a productos desde carrito, preservando filtros');
+    this.router.navigate(['/productos'], { 
+      queryParamsHandling: 'preserve' 
+    });
+  }
 }

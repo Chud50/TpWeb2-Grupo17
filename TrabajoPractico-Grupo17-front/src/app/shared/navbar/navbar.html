@@ -17,7 +17,7 @@
         <li class="nav-item">
           <a class="nav-link" 
              [class.active]="isActiveRoute('categorias')" 
-             [routerLink]="['/categorias']">
+             (click)="navegarA('/categorias')">
             Categorías
           </a>
         </li>
@@ -29,7 +29,7 @@
         <li class="nav-item">
           <a class="nav-link" 
              [class.active]="isActiveRoute('carrito')" 
-             [routerLink]="['/carrito']">
+             (click)="navegarA('/carrito')">
             <i class="fas fa-shopping-bag me-1"></i>Carrito
             <span class="badge bg-primary ms-1" *ngIf="cantidadEnCarrito > 0">{{ cantidadEnCarrito }}</span>
           </a>
