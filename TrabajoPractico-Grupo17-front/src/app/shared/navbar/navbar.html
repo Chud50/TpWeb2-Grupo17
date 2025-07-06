@@ -22,7 +22,11 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Contacto</a>
+          <a class="nav-link" 
+             [class.active]="isActiveRoute('contacto')" 
+             (click)="navegarA('/contacto')">
+            Contacto
+          </a>
         </li>
       </ul>
       <ul class="navbar-nav">

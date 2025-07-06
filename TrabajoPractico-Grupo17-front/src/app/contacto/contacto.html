@@ -1,0 +1,100 @@
+<!-- Navegación -->
+<app-navbar activeRoute="contacto"></app-navbar>
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container text-center">
+    <h1 class="hero-title fade-in-up">CONTACTO</h1>
+    <p class="hero-subtitle fade-in-up">Conectate con nosotros y conocé al equipo</p>
+  </div>
+</section>
+
+<!-- Información de Contacto -->
+<section class="contact-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="contact-card">
+          <div class="contact-header">
+            <h2 class="contact-title">¿Tenés alguna consulta?</h2>
+            <p class="contact-description">Estamos acá para ayudarte. Contactanos por cualquiera de estos medios</p>
+          </div>
+          
+          <div class="contact-methods">
+            <div class="contact-item" (click)="abrirInstagram()">
+              <div class="contact-icon instagram">
+                <i class="fab fa-instagram"></i>
+              </div>
+              <div class="contact-info">
+                <h4>Instagram</h4>
+                <p>&#64;appi-ropa</p>
+                <span class="contact-action">Seguinos en Instagram</span>
+              </div>
+            </div>
+
+            <div class="contact-item" (click)="abrirWhatsApp()">
+              <div class="contact-icon whatsapp">
+                <i class="fab fa-whatsapp"></i>
+              </div>
+              <div class="contact-info">
+                <h4>WhatsApp</h4>
+                <p>+54 9 11 2345-6789</p>
+                <span class="contact-action">Chateá con nosotros</span>
+              </div>
+            </div>
+
+            <div class="contact-item" (click)="enviarEmail()">
+              <div class="contact-icon email">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="contact-info">
+                <h4>Email</h4>
+                <p>appiropa&#64;gmail.com</p>
+                <span class="contact-action">Envianos un mail</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Equipo de Desarrollo -->
+<section class="team-section">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="team-title">NUESTRO EQUIPO</h2>
+      <p class="team-subtitle">Conocé a los desarrolladores detrás de APPI-ROPA</p>
+      <div class="academic-badge">
+        <i class="fas fa-graduation-cap me-2"></i>
+        Trabajo Práctico Integrador - Taller Web II - Grupo 17
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-lg-6 col-md-6 mb-4" *ngFor="let integrante of integrantes; let i = index">
+        <div class="team-card">
+          <div class="team-member-placeholder">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="team-info">
+            <h4 class="member-name">
+              {{ integrante.nombre }} {{ integrante.apellido }}
+            </h4>
+            <p class="member-role">Desarrollador Full Stack</p>
+            
+            <div class="member-contact">
+              <a [href]="'mailto:' + integrante.email" class="contact-link email-link">
+                <i class="fas fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<app-footer></app-footer>

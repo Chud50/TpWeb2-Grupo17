@@ -4,6 +4,7 @@ import { ProductosComponent } from './productos/productos';
 import { RegistroComponent } from './registro/registro';
 import { CarritoComponent } from './carrito/carrito';
 import { CategoriasComponent } from './categorias/categorias';
+import { ContactoComponent } from './contacto/contacto';
 import { authGuard } from './api/services/auth/guards/auth.guard';
 
 export const routes: Routes = [
@@ -23,6 +24,11 @@ export const routes: Routes = [
         path: 'carrito', 
         component: CarritoComponent,
         canActivate: [authGuard]
+    },
+    { 
+        path: 'contacto', 
+        component: ContactoComponent
+       // canActivate: [authGuard]
     },
     { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
