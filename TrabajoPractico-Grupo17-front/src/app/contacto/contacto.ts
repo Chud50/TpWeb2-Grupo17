@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { NavbarComponent } from '../shared/navbar/navbar';
 import { FooterComponent } from '../shared/footer/footer';
 
@@ -35,7 +36,20 @@ export class ContactoComponent {
     }
   ];
 
-  constructor() {}
+  constructor(private router: Router) {}
+
+  navegarA(ruta: string) {
+    console.log('🔗 Navegando desde contacto a:', ruta);
+    
+    // Si navegamos a productos, preservar query params para mantener filtros
+    if (ruta === '/productos') {
+      this.router.navigate([ruta], { 
+        queryParamsHandling: 'preserve' 
+      });
+    } else {
+      this.router.navigate([ruta]);
+    }
+  }
 
   abrirWhatsApp() {
     const numero = '5491123456789'; // Número falso

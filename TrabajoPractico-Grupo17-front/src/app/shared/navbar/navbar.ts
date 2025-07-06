@@ -34,18 +34,23 @@ export class NavbarComponent {
   navegarA(ruta: string) {
     console.log('🔗 Navegando a:', ruta, 'desde:', this.router.url);
     
-    // Si navegamos a productos, preservar query params actuales
-    if (ruta === '/productos') {
+    // Si estamos en productos y navegamos a cualquier lado, preservar filtros
+    const rutasQuePreservanFiltros = ['/productos', '/carrito', '/contacto'];
+    const estamosEnProductos = this.router.url.includes('/productos');
+    const navegamosARutaQuePreservaFiltros = rutasQuePreservanFiltros.includes(ruta);
+    
+    if (estamosEnProductos && navegamosARutaQuePreservaFiltros) {
+      // Preservar query params cuando venimos de productos
       this.router.navigate([ruta], { 
         queryParamsHandling: 'preserve' 
       });
-    } else if (ruta === '/carrito') {
-      // Para carrito también preservar query params de productos
+    } else if (ruta === '/productos') {
+      // Cuando navegamos A productos, siempre preservar los query params actuales
       this.router.navigate([ruta], { 
         queryParamsHandling: 'preserve' 
       });
     } else {
-      // Para otras rutas (como categorías), navegar normalmente
+      // Para navegación a categorías, limpiar filtros
       this.router.navigate([ruta]);
     }
   }
