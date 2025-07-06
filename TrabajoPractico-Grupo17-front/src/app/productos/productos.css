@@ -1,31 +1,85 @@
 /* === HERO SECTION === */
 .hero-section {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, #ced4da 0%, #adb5bd 50%, #9a9ea3 100%);
   padding: 4rem 0;
   margin-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(0, 123, 255, 0.03) 0%, rgba(108, 117, 125, 0.02) 100%);
+  pointer-events: none;
 }
 
 .hero-title {
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--primary-color);
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: #2c3e50;
   margin-bottom: 1rem;
-  letter-spacing: -0.05em;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 2;
 }
 
 .hero-subtitle {
-  font-size: 1.25rem;
-  color: var(--text-secondary);
+  font-size: 1.2rem;
+  color: #6c757d;
   margin-bottom: 2rem;
   line-height: 1.6;
+  position: relative;
+  z-index: 2;
+  opacity: 0.9;
 }
 
-.hero-badges .badge {
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
+/* Animaciones */
+.fade-in-up {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Breadcrumb mejorado */
+.breadcrumb {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+  display: inline-flex;
+  margin: 0 auto;
+}
+
+.breadcrumb-link {
+  color: #007bff;
+  text-decoration: none;
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+
+.breadcrumb-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+  color: #6c757d;
+  font-weight: 600;
 }
 
 .bg-outline-dark {
@@ -340,21 +394,21 @@
 
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
+  .hero-section {
+    padding: 3rem 0;
+  }
+  
   .hero-title {
     font-size: 2.5rem;
   }
   
-  .section-title {
-    font-size: 2rem;
+  .hero-subtitle {
+    font-size: 1rem;
   }
   
-  .product-image {
-    height: 250px;
-  }
-  
-  .social-links {
-    justify-content: center;
-    margin-top: 1rem;
+  .breadcrumb {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -377,5 +431,26 @@
   
   .product-info {
     padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 2.5rem 0;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .breadcrumb {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
   }
 }
