@@ -87,4 +87,9 @@ export class CarritoComponent implements OnInit, OnDestroy {
       queryParamsHandling: 'preserve' 
     });
   }
+
+  finalizarCompra(): void {
+    console.log('🛒 Finalizando compra...');
+    this.router.navigate(['/checkout']);
+  }
 }

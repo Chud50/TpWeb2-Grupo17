@@ -1,0 +1,47 @@
+<!-- Contenedor principal del checkout -->
+<div class="checkout-container">
+  <div class="checkout-card">
+    
+    <!-- Icono de éxito -->
+    <div class="success-icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    
+    <!-- Mensaje principal -->
+    <div class="checkout-content">
+      <h1 class="checkout-title">¡Compra Finalizada con Éxito!</h1>
+      <p class="checkout-message">
+        Tu pedido ha sido procesado correctamente. 
+        <br>Gracias por elegir APPI-ROPA.
+      </p>
+      
+      <!-- Información adicional -->
+      <div class="checkout-info">
+        <div class="info-item">
+          <i class="fas fa-envelope me-2"></i>
+          <span>Recibirás un email de confirmación en breve</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-truck me-2"></i>
+          <span>Tu pedido será procesado en 24-48 horas</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Botón de acción -->
+    <div class="checkout-actions">
+      <button class="btn btn-primary btn-lg" (click)="seguirComprando()">
+        <i class="fas fa-shopping-bag me-2"></i>
+        Seguir Comprando
+      </button>
+    </div>
+    
+  </div>
+  
+  <!-- Decoración de fondo -->
+  <div class="checkout-decoration">
+    <div class="decoration-circle decoration-1"></div>
+    <div class="decoration-circle decoration-2"></div>
+    <div class="decoration-circle decoration-3"></div>
+  </div>
+</div>
