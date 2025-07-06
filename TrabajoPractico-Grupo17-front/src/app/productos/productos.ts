@@ -7,11 +7,12 @@ import { AuthService } from '../api/services/auth/auth.service';
 import { Producto } from '../modules/productos/interfaces/producto.interface';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../shared/navbar/navbar';
+import { FooterComponent } from '../shared/footer/footer';
 
 @Component({
   selector: 'app-productos',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, NavbarComponent],
+  imports: [CommonModule, RouterModule, FormsModule, NavbarComponent, FooterComponent],
   templateUrl: './productos.html',
   styleUrls: ['./productos.css']
 })

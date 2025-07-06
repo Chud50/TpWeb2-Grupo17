@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../api/services/auth/auth.service';
 import { NavbarComponent } from '../shared/navbar/navbar';
+import { FooterComponent } from '../shared/footer/footer';
 
 @Component({
   selector: 'app-categorias',
   standalone: true,
-  imports: [CommonModule, NavbarComponent],
+  imports: [CommonModule, NavbarComponent, FooterComponent],
   templateUrl: './categorias.html',
   styleUrl: './categorias.css'
 })

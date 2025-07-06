@@ -6,11 +6,12 @@ import { CarritoService } from '../api/services/carrito/carrito.service';
 import { AuthService } from '../api/services/auth/auth.service';
 import { Carrito, CarritoItem } from '../modules/carrito/interfaces/carrito.interface';
 import { NavbarComponent } from '../shared/navbar/navbar';
+import { FooterComponent } from '../shared/footer/footer';
 
 @Component({
   selector: 'app-carrito',
   standalone: true,
-  imports: [CommonModule, RouterModule, NavbarComponent],
+  imports: [CommonModule, RouterModule, NavbarComponent, FooterComponent],
   templateUrl: './carrito.html',
   styleUrl: './carrito.css'
 })
