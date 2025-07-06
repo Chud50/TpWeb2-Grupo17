@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { ProductoService } from '../api/services/producto/producto.service';
 import { CarritoService } from '../api/services/carrito/carrito.service';
 import { AuthService } from '../api/services/auth/auth.service';
@@ -31,7 +31,7 @@ export class ProductosComponent implements OnInit {
 };
 
 
-  categorias: string[] = ['Ropa', 'Electrónica', 'Libros'];
+  categorias: string[] = ['Remeras', 'Buzos', 'Pantalones'];
 
   ordenSeleccionado = '';
 
@@ -39,12 +39,34 @@ export class ProductosComponent implements OnInit {
     private productoService: ProductoService,
     private carritoService: CarritoService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
     this.cargarProductos();
     this.actualizarCantidadCarrito();
+    
+    // Verificar si hay filtro de categoría en query params
+    this.route.queryParams.subscribe(params => {
+      if (params['categoria']) {
+        console.log('📂 Filtro de categoría detectado:', params['categoria']);
+        console.log('📊 Productos cargados:', this.productosOriginal.length);
+        console.log('🏷️ Clasificaciones en BD:', this.productosOriginal.map(p => p.clasificacion));
+        
+        this.filtros.categoria = params['categoria'];
+        
+        // Si los productos ya están cargados, aplicar filtro inmediatamente
+        if (this.productosOriginal.length > 0) {
+          this.aplicarFiltros();
+        } else {
+          // Si no, esperar a que se carguen
+          setTimeout(() => {
+            this.aplicarFiltros();
+          }, 500);
+        }
+      }
+    });
   }
 
   actualizarCantidadCarrito() {
@@ -65,6 +87,15 @@ export class ProductosComponent implements OnInit {
         this.productosOriginal = productos;
         this.productos = productos;
         this.loading = false;
+        
+        console.log('📦 Productos cargados desde BD:', productos.length);
+        console.log('🏷️ Clasificaciones disponibles:', [...new Set(productos.map(p => p.clasificacion))]);
+        
+        // Aplicar filtro si hay uno pendiente
+        if (this.filtros.categoria) {
+          console.log('🔄 Aplicando filtro pendiente:', this.filtros.categoria);
+          this.aplicarFiltros();
+        }
       },
       error: (error) => {
         this.error = 'Error al cargar productos del servidor';
@@ -74,17 +105,22 @@ export class ProductosComponent implements OnInit {
   }
 
  aplicarFiltros() {
-  console.log('Aplicando filtros:', this.filtros);
+  console.log('🔍 Aplicando filtros:', this.filtros);
+  
   this.productos = this.productosOriginal.filter(prod => {
-    const matchCategoria = this.filtros.categoria ? prod.clasificacion === this.filtros.categoria : true;
+    // Hacer comparación case-insensitive para categoría
+    const matchCategoria = this.filtros.categoria ? 
+      prod.clasificacion.toLowerCase() === this.filtros.categoria.toLowerCase() : true;
+    
     const matchPrecioMin = this.filtros.precioMin != null ? prod.precio >= this.filtros.precioMin : true;
     const matchPrecioMax = this.filtros.precioMax != null ? prod.precio <= this.filtros.precioMax : true;
     const matchNombre = this.filtros.nombre ? prod.nombre.toLowerCase().includes(this.filtros.nombre.toLowerCase()) : true;
     const matchDescripcion = this.filtros.descripcion ? prod.descripcion.toLowerCase().includes(this.filtros.descripcion.toLowerCase()) : true;
-
+    
     return matchCategoria && matchPrecioMin && matchPrecioMax && matchNombre && matchDescripcion;
   });
-  console.log('Productos filtrados:', this.productos);
+  
+  console.log('✅ Productos filtrados:', this.productos.length);
 }
 
 limpiarFiltros() {
@@ -96,6 +132,9 @@ limpiarFiltros() {
     descripcion: ''
   };
   this.productos = [...this.productosOriginal];
+  
+  // Limpiar query params si existen
+  this.router.navigate(['/productos']);
 }
 
   aplicarOrden() {

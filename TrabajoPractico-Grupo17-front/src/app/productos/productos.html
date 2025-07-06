@@ -4,8 +4,27 @@
 <!-- Hero -->
 <section class="py-5 bg-light">
   <div class="container text-center">
-    <h1 class="display-5">Nueva Colección</h1>
-    <p class="lead">Descubrí las últimas tendencias en moda urbana</p>
+    <h1 class="display-5">
+      <span *ngIf="!filtros.categoria">Nueva Colección</span>
+      <span *ngIf="filtros.categoria">{{ filtros.categoria | titlecase }}</span>
+    </h1>
+    <p class="lead">
+      <span *ngIf="!filtros.categoria">Descubrí las últimas tendencias en moda urbana</span>
+      <span *ngIf="filtros.categoria">Explorá nuestra colección de {{ filtros.categoria }}</span>
+    </p>
+    
+    <!-- Breadcrumb cuando hay filtro -->
+    <nav *ngIf="filtros.categoria" aria-label="breadcrumb" class="mt-3">
+      <ol class="breadcrumb justify-content-center">
+        <li class="breadcrumb-item">
+          <a class="text-decoration-none" (click)="limpiarFiltros()">Inicio</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a class="text-decoration-none" [routerLink]="['/categorias']">Categorías</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{ filtros.categoria | titlecase }}</li>
+      </ol>
+    </nav>
   </div>
 </section>
 

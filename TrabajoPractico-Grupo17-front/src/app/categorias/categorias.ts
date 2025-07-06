@@ -19,21 +19,21 @@ export class CategoriasComponent {
       nombre: 'REMERAS',
       descripcion: 'Descubrí nuestra colección de remeras urbanas',
       imagen: 'assets/remera.jpg',
-      clasificacion: 'remeras'
+      clasificacion: 'Remeras'
     },
     {
       id: 'pantalones',
       nombre: 'PANTALONES',
       descripcion: 'Jeans y pantalones para todos los estilos',
       imagen: 'assets/jean.jpg',
-      clasificacion: 'pantalones'
+      clasificacion: 'Pantalones'
     },
     {
       id: 'buzos',
       nombre: 'BUZOS',
       descripcion: 'Buzos cómodos para el día a día',
       imagen: 'assets/buzo.jpg',
-      clasificacion: 'buzos'
+      clasificacion: 'Buzos'
     }
   ];
 
