@@ -243,7 +243,7 @@ async function main() {
 main()
   .catch((e) => {
     console.error('❌ Error al insertar productos:', e);
-    process.exit(1);
+    throw e;
   })
   .finally(async () => {
     await prisma.$disconnect();
